@@ -146,12 +146,6 @@ class OrderController extends Controller
                 ->setStatusCode(404);
         }
 
-        if ($order->user_id !== auth()->id()) {
-            return response()
-                ->json(["message" => "Forbidden"])
-                ->setStatusCode(403);
-        }
-
         $orderItems = OrderItem::with('product')->where('order_id', $order->id)->paginate(10);
 
         return response()
