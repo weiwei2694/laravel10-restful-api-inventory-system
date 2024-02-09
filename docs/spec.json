@@ -2037,6 +2037,1645 @@
                     }
                 }
             }
+        },
+        "/orders": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Orders"],
+                "summary": "Get all orders",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Order"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": "string"
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Get orders successfully.",
+                                        "data": {
+                                            "current_page": 1,
+                                            "data": [
+                                                {
+                                                    "id": 1,
+                                                    "date": "2024-02-08 02:06:14",
+                                                    "total_price": 0,
+                                                    "customer_name": "wei",
+                                                    "customer_email": "wei@gmail.com",
+                                                    "user_id": 1,
+                                                    "created_at": "2024-02-08T02:06:14.000000Z",
+                                                    "updated_at": "2024-02-08T02:06:14.000000Z"
+                                                }
+                                            ],
+                                            "first_page_url": "http://localhost:8000/api/v1/orders?page=1",
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "last_page_url": "http://localhost:8000/api/v1/orders?page=1",
+                                            "links": [
+                                                {
+                                                    "url": null,
+                                                    "label": "&laquo; Previous",
+                                                    "active": false
+                                                },
+                                                {
+                                                    "url": "http://localhost:8000/api/v1/orders?page=1",
+                                                    "label": "1",
+                                                    "active": true
+                                                },
+                                                {
+                                                    "url": null,
+                                                    "label": "Next &raquo;",
+                                                    "active": false
+                                                }
+                                            ],
+                                            "next_page_url": null,
+                                            "path": "http://localhost:8000/api/v1/orders",
+                                            "per_page": 10,
+                                            "prev_page_url": null,
+                                            "to": 1,
+                                            "total": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Orders"],
+                "summary": "Create order",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "customer_name": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "customer_email": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                },
+                                "example": {
+                                    "date": "2024-02-10T02:08:55",
+                                    "customer_name": "test customer name",
+                                    "customer_email": "testcustomeremail@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Order"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Order created successfully.",
+                                        "data": {
+                                            "date": "2024-02-10T02:08:55",
+                                            "customer_name": "test customer name",
+                                            "customer_email": "testcustomeremail@gmail.com",
+                                            "user_id": 1,
+                                            "updated_at": "2024-02-08T02:09:59.000000Z",
+                                            "created_at": "2024-02-08T02:09:59.000000Z",
+                                            "id": 2
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Orders"],
+                "summary": "Get order",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Order"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Get order successfully.",
+                                        "data": {
+                                            "id": 1,
+                                            "date": "2024-02-08 02:06:14",
+                                            "total_price": 0,
+                                            "customer_name": "wei",
+                                            "customer_email": "wei@gmail.com",
+                                            "user_id": 1,
+                                            "created_at": "2024-02-08T02:06:14.000000Z",
+                                            "updated_at": "2024-02-08T02:06:14.000000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Orders"],
+                "summary": "Update order",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Order"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Order updated successfully.",
+                                        "data": {
+                                            "id": 1,
+                                            "date": "2024-02-08 02:06:14",
+                                            "total_price": 0,
+                                            "customer_name": "wei update",
+                                            "customer_email": "weiupdate@gmail.com",
+                                            "user_id": 1,
+                                            "created_at": "2024-02-08T02:06:14.000000Z",
+                                            "updated_at": "2024-02-08T02:17:19.000000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderNotFound"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Orders"],
+                "summary": "Delete order",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}/order-items": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Orders"],
+                "summary": "Get order items",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "quantity": {
+                                                                "type": "integer"
+                                                            },
+                                                            "unit_price": {
+                                                                "type": "number",
+                                                                "format": "float"
+                                                            },
+                                                            "product_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "order_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "product": {
+                                                                "$ref": "#/components/schemas/Product"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": "string"
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Get order items successfully.",
+                                        "data": {
+                                            "current_page": 1,
+                                            "data": [
+                                                {
+                                                    "id": 1,
+                                                    "quantity": 2,
+                                                    "unit_price": 100,
+                                                    "product_id": 1,
+                                                    "order_id": 2,
+                                                    "created_at": "2024-02-08T02:21:48.000000Z",
+                                                    "updated_at": "2024-02-08T02:21:48.000000Z",
+                                                    "product": {
+                                                        "id": 1,
+                                                        "name": "update name product",
+                                                        "description": "description product",
+                                                        "price": 100,
+                                                        "quantity_in_stock": 98,
+                                                        "category_id": 2,
+                                                        "user_id": 1,
+                                                        "created_at": "2024-02-07T11:17:20.000000Z",
+                                                        "updated_at": "2024-02-08T02:22:21.000000Z"
+                                                    }
+                                                }
+                                            ],
+                                            "first_page_url": "http://localhost:8000/api/v1/orders/2/order-items?page=1",
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "last_page_url": "http://localhost:8000/api/v1/orders/2/order-items?page=1",
+                                            "links": [
+                                                {
+                                                    "url": null,
+                                                    "label": "&laquo; Previous",
+                                                    "active": false
+                                                },
+                                                {
+                                                    "url": "http://localhost:8000/api/v1/orders/2/order-items?page=1",
+                                                    "label": "1",
+                                                    "active": true
+                                                },
+                                                {
+                                                    "url": null,
+                                                    "label": "Next &raquo;",
+                                                    "active": false
+                                                }
+                                            ],
+                                            "next_page_url": null,
+                                            "path": "http://localhost:8000/api/v1/orders/2/order-items",
+                                            "per_page": 10,
+                                            "prev_page_url": null,
+                                            "to": 1,
+                                            "total": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order-items": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Order Items"],
+                "summary": "Get order items",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/OrderItem"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": "string"
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Get order items successfully.",
+                                        "data": {
+                                            "current_page": 1,
+                                            "data": [
+                                                {
+                                                    "id": 1,
+                                                    "quantity": 2,
+                                                    "unit_price": 100,
+                                                    "product_id": 1,
+                                                    "order_id": 2,
+                                                    "created_at": "2024-02-08T02:21:48.000000Z",
+                                                    "updated_at": "2024-02-08T02:21:48.000000Z"
+                                                }
+                                            ],
+                                            "first_page_url": "http://localhost:8000/api/v1/order-items?page=1",
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "last_page_url": "http://localhost:8000/api/v1/order-items?page=1",
+                                            "links": [
+                                                {
+                                                    "url": null,
+                                                    "label": "&laquo; Previous",
+                                                    "active": false
+                                                },
+                                                {
+                                                    "url": "http://localhost:8000/api/v1/order-items?page=1",
+                                                    "label": "1",
+                                                    "active": true
+                                                },
+                                                {
+                                                    "url": null,
+                                                    "label": "Next &raquo;",
+                                                    "active": false
+                                                }
+                                            ],
+                                            "next_page_url": null,
+                                            "path": "http://localhost:8000/api/v1/order-items",
+                                            "per_page": 10,
+                                            "prev_page_url": null,
+                                            "to": 1,
+                                            "total": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Order Items"],
+                "summary": "Create order item",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "quantity": {
+                                        "type": "integer",
+                                        "required": true
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "required": true
+                                    },
+                                    "order_id": {
+                                        "type": "integer",
+                                        "required": true
+                                    }
+                                },
+                                "example": {
+                                    "quantity": 10,
+                                    "product_id": 1,
+                                    "order_id": 2
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrderItem"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Order item created successfully.",
+                                        "data": {
+                                            "quantity": "10",
+                                            "unit_price": 100,
+                                            "product_id": "1",
+                                            "order_id": "2",
+                                            "updated_at": "2024-02-08T06:30:05.000000Z",
+                                            "created_at": "2024-02-08T06:30:05.000000Z",
+                                            "id": 3
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "quantity": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "product_id": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "order_id": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "The quantity field is required. (and 2 more errors)",
+                                        "errors": {
+                                            "quantity": [
+                                                "The quantity field is required."
+                                            ],
+                                            "product_id": [
+                                                "The product id field is required."
+                                            ],
+                                            "order_id": [
+                                                "The order id field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order-items/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Order Items"],
+                "summary": "Get order item",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrderItem"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Get order item successfully.",
+                                        "data": {
+                                            "id": 1,
+                                            "quantity": 2,
+                                            "unit_price": 100,
+                                            "product_id": 1,
+                                            "order_id": 2,
+                                            "created_at": "2024-02-08T02:21:48.000000Z",
+                                            "updated_at": "2024-02-08T02:21:48.000000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItemNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Order Items"],
+                "summary": "Update order item",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "quantity": {
+                                        "type": "integer",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrderItem"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Order item updated successfully.",
+                                        "data": {
+                                            "id": 1,
+                                            "quantity": "50",
+                                            "unit_price": 100,
+                                            "product_id": 1,
+                                            "order_id": 2,
+                                            "created_at": "2024-02-08T02:21:48.000000Z",
+                                            "updated_at": "2024-02-08T06:33:05.000000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItemNotFound"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "quantity": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "The quantity field is required.",
+                                        "errors": {
+                                            "quantity": [
+                                                "The quantity field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": ["Order Items"],
+                "summary": "Delete order item",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItemNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2253,6 +3892,128 @@
                 },
                 "example": {
                     "message": "Product not found"
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "date": {
+                        "type": "string"
+                    },
+                    "total_price": {
+                        "type": "integer",
+                        "format": "float"
+                    },
+                    "customer_name": {
+                        "type": "string"
+                    },
+                    "customer_email": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "OrderNotFound": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "message": "Order not found"
+                }
+            },
+            "OrderValidationError": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "object",
+                        "properties": {
+                            "date": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "customer_name": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "customer_email": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "message": "The date field is required. (and 2 more errors)",
+                    "errors": {
+                        "date": ["The date field is required."],
+                        "customer_name": [
+                            "The customer name field is required."
+                        ],
+                        "customer_email": [
+                            "The customer email field is required."
+                        ]
+                    }
+                }
+            },
+            "OrderItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "unit_price": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "OrderItemNotFound": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "message": "Order item not found"
                 }
             }
         }
