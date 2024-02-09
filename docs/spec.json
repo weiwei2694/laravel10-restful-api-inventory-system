@@ -1,0 +1,830 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Inventory System RESTful API",
+        "version": "1.0.0",
+        "description": "Inventory System RESTful API",
+        "contact": {
+            "name": "M Arya Priema Halawa",
+            "email": "99aryaprima@gmail.com",
+            "url": "https://github.com/weiwei2694"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1",
+            "description": "Api V1"
+        }
+    ],
+    "externalDocs": {
+        "description": "Repository of this project",
+        "url": "https://github.com/weiwei2694/laravel10_restful_inventory_system"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "tags": ["Users"],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Get users successfully.",
+                                        "data": [
+                                            {
+                                                "id": 1,
+                                                "name": "1",
+                                                "email": "admin@gmail.com",
+                                                "role": 2,
+                                                "email_verified_at": null,
+                                                "created_at": "2024-02-07T02:46:52.000000Z",
+                                                "updated_at": "2024-02-07T02:46:52.000000Z"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "user",
+                                                "email": "user@gmail.com",
+                                                "role": 1,
+                                                "email_verified_at": null,
+                                                "created_at": "2024-02-07T02:46:52.000000Z",
+                                                "updated_at": "2024-02-07T02:46:52.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "tags": ["Users"],
+                "summary": "Create a new user",
+                "responses": {
+                    "201": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "User created successfully.",
+                                        "data": {
+                                            "name": "test",
+                                            "email": "test@gmail.com",
+                                            "updated_at": "2024-02-07T04:13:12.000000Z",
+                                            "created_at": "2024-02-07T04:13:12.000000Z",
+                                            "id": 3
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "The name field is required. (and 2 more errors)",
+                                        "errors": {
+                                            "name": [
+                                                "The name field is required."
+                                            ],
+                                            "email": [
+                                                "The email field is required."
+                                            ],
+                                            "password": [
+                                                "The password field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                },
+                                "example": {
+                                    "name": "test",
+                                    "email": "test@gmail.com",
+                                    "password": "test"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "tags": ["Users"],
+                "summary": "Get a single user",
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "tags": ["Users"],
+                "summary": "Update a user",
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "User updated successfully.",
+                                        "data": {
+                                            "id": 2,
+                                            "name": "user update",
+                                            "email": "user@gmail.com",
+                                            "role": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationUserToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserNotFound"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "The name field is required. (and 1 more error)",
+                                        "errors": {
+                                            "name": [
+                                                "The name field is required."
+                                            ],
+                                            "email": [
+                                                "The email field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                },
+                                "example": {
+                                    "name": "user update",
+                                    "email": "user@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Users"],
+                "summary": "Delete a user",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Authorization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "headers": {
+            "Accept": {
+                "description": "application/json",
+                "type": "string"
+            },
+            "AuthorizationInvalid": {
+                "description": "Bearer invalid_token",
+                "type": "string"
+            },
+            "AuthorizationUserToken": {
+                "description": "Bearer accessTokenUser",
+                "type": "string"
+            },
+            "AuthorizationAdminToken": {
+                "description": "Bearer accessTokenAdmin",
+                "type": "string"
+            }
+        },
+        "parameters": {
+            "AuthorizationHeader": {
+                "in": "header",
+                "name": "Authorization",
+                "required": false,
+                "description": "Bearer token",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "AcceptHeader": {
+                "in": "header",
+                "name": "Accept",
+                "required": true,
+                "description": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas": {
+            "Forbidden": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "message": "Forbidden"
+                }
+            },
+            "Unauthenticated": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "message": "Unauthenticated."
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "integer"
+                    },
+                    "email_verified_at": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserNotFound": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "message": "User not found"
+                }
+            }
+        }
+    }
+}
