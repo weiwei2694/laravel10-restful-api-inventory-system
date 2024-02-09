@@ -21,6 +21,231 @@
         "url": "https://github.com/weiwei2694/laravel10_restful_inventory_system"
     },
     "paths": {
+        "/auth/login": {
+            "post": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    }
+                ],
+                "tags": ["Auth"],
+                "summary": "Login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                },
+                                "example": {
+                                    "email": "admin@gmail.com",
+                                    "password": "password"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "role": {
+                                                            "type": "integer"
+                                                        }
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "access": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Login successfully.",
+                                        "data": {
+                                            "user": {
+                                                "id": 1,
+                                                "name": "1",
+                                                "email": "admin@gmail.com",
+                                                "role": 2
+                                            },
+                                            "tokens": {
+                                                "access": "4|kFY5eujxsWJ7A77RsbabyY1qLT7VEXxXdTPnOou8396e0d94"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            }
+                        },
+                        "description": "Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "The email field is required. (and 1 more error)",
+                                        "errors": {
+                                            "email": [
+                                                "The email field is required."
+                                            ],
+                                            "password": [
+                                                "The password field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/AcceptHeader"
+                    },
+                    {
+                        "$ref": "#/components/parameters/AuthorizationHeader"
+                    }
+                ],
+                "tags": ["Auth"],
+                "summary": "Logout",
+                "responses": {
+                    "204": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationAdminToken"
+                            }
+                        },
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "headers": {
+                            "Accept": {
+                                "$ref": "#/components/headers/Accept"
+                            },
+                            "Authorization": {
+                                "$ref": "#/components/headers/AuthorizationInvalid"
+                            }
+                        },
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "security": [
