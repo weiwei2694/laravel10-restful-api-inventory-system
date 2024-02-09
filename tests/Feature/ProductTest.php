@@ -283,6 +283,51 @@ class ProductTest extends TestCase
             ]);
     }
 
+    # update - 422
+    public function testUpdateValidationError_422()
+    {
+        $product = Product::where('name', 'test')->first();
+
+        $this->put('/api/v1/products/' . $product->id, [
+            "name" => "",
+            "description" => "",
+            "price" => "",
+            "quantity_in_stock" => "",
+            "category_id" => ""
+        ], ['Accept' => 'application/json', 'Authorization' => $this->accessTokenUser])
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                "message",
+                "errors" => [
+                    "name",
+                    "description",
+                    "price",
+                    "quantity_in_stock",
+                    "category_id"
+                ]
+            ])
+            ->assertJson([
+                "message" => "The name field is required. (and 4 more errors)",
+                "errors" => [
+                    "name" => [
+                        "The name field is required."
+                    ],
+                    "description" => [
+                        "The description field is required."
+                    ],
+                    "price" => [
+                        "The price field is required."
+                    ],
+                    "quantity_in_stock" => [
+                        "The quantity in stock field is required."
+                    ],
+                    "category_id" => [
+                        "The category id field is required."
+                    ]
+                ]
+            ]);
+    }
+
     # update - 401
     public function testUpdateAuthorization_401()
     {
